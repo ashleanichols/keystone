@@ -1,7 +1,7 @@
 import { text, integer, relationship } from '@keystone-next/fields';
 import { createSchema, list } from '@keystone-next/keystone/schema';
 import { setupTestRunner } from '@keystone-next/testing';
-import { apiTestConfig, expectGraphQLValidationError, expectLimitsError } from '../utils';
+import { apiTestConfig, expectGraphQLValidationError, expectLimitsExceededError } from '../utils';
 import { depthLimit, definitionLimit, fieldLimit } from './validation';
 
 const runner = setupTestRunner({
@@ -115,7 +115,8 @@ describe('maxResults Limit', () => {
           }
       `,
         }));
-        expectLimitsError(errors, [
+
+        expectLimitsExceededError(errors, [
           { path: ['allUsers'], listKey: 'User', type: 'maxResults', limit: 2 },
         ]);
 
@@ -133,7 +134,7 @@ describe('maxResults Limit', () => {
       `,
         }));
 
-        expectLimitsError(errors, [
+        expectLimitsExceededError(errors, [
           { path: ['allUsers'], listKey: 'User', type: 'maxResults', limit: 2 },
         ]);
       })
@@ -214,8 +215,13 @@ describe('maxResults Limit', () => {
       `,
         }));
 
-        expectLimitsError(errors, [
-          { path: ['allPosts', 0, 'author'], listKey: 'User', type: 'maxResults', limit: 2 },
+        expectLimitsExceededError(errors, [
+          {
+            path: ['allPosts', expect.any(Number), 'author'],
+            listKey: 'User',
+            type: 'maxResults',
+            limit: 2,
+          },
         ]);
 
         // Requesting the too-many-authors post is okay as long as the authors aren't returned
@@ -244,8 +250,13 @@ describe('maxResults Limit', () => {
       `,
         }));
 
-        expectLimitsError(errors, [
-          { path: ['allPosts', 1, 'author'], listKey: 'User', type: 'maxResults', limit: 2 },
+        expectLimitsExceededError(errors, [
+          {
+            path: ['allPosts', expect.any(Number), 'author'],
+            listKey: 'User',
+            type: 'maxResults',
+            limit: 2,
+          },
         ]);
 
         // All subqueries are within limits, but the total isn't
@@ -265,7 +276,7 @@ describe('maxResults Limit', () => {
           }
       `,
         }));
-        expectLimitsError(errors, [
+        expectLimitsExceededError(errors, [
           {
             path: ['allPosts', 0, 'author', 1, 'posts'],
             listKey: 'Post',

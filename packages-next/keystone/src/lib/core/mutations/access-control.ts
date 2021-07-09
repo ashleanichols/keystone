@@ -102,9 +102,7 @@ export async function getAccessControlledItemForUpdate(
     where:
       accessControl === true
         ? uniqueWhereInWhereForm
-        : {
-            AND: [uniqueWhereInWhereForm, await resolveWhereInput(accessControl, list)],
-          },
+        : { AND: [uniqueWhereInWhereForm, await resolveWhereInput(accessControl, list)] },
   });
   if (!item) {
     throw AccessDeniedError();

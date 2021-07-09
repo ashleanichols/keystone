@@ -38,9 +38,7 @@ export async function findManyFilter(
   }
   let resolvedWhere = await resolveWhereInput(where || {}, list);
   if (typeof access === 'object') {
-    resolvedWhere = {
-      AND: [resolvedWhere, await resolveWhereInput(access, list)],
-    };
+    resolvedWhere = { AND: [resolvedWhere, await resolveWhereInput(access, list)] };
   }
 
   return list.applySearchField(resolvedWhere, search);

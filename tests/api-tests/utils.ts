@@ -74,7 +74,7 @@ export const expectValidationError = (
   );
 };
 
-export const expectLimitsError = (
+export const expectLimitsExceededError = (
   errors: readonly any[] | undefined,
   args: { path: any[]; listKey: string; type: 'maxResults' | 'maxTotalResults'; limit: number }[]
 ) => {

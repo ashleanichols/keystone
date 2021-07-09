@@ -32,6 +32,7 @@ export async function resolveUniqueWhereInput(
 ): Promise<UniquePrismaFilter> {
   const inputKeys = Object.keys(input);
   if (inputKeys.length !== 1) {
+    // Bad User Input
     throw new Error(
       `Exactly one key must be passed in a unique where input but ${inputKeys.length} keys were passed`
     );
@@ -39,13 +40,11 @@ export async function resolveUniqueWhereInput(
   const key = inputKeys[0];
   const val = input[key];
   if (val === null) {
+    // Bad User Input
     throw new Error(`The unique value provided in a unique where input must not be null`);
   }
   const resolver = fields[key].input!.uniqueWhere!.resolve;
-  const resolvedVal = resolver ? await resolver(val, context) : val;
-  return {
-    [key]: resolvedVal,
-  };
+  return { [key]: resolver ? await resolver(val, context) : val };
 }
 
 export async function resolveWhereInput(
