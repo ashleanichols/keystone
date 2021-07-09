@@ -68,16 +68,7 @@ testModules
             expectValidationError(errors, [
               {
                 path: ['createTest'],
-                errors: [
-                  {
-                    data: {
-                      operation: 'create',
-                      originalInput: { name: 'test entry' },
-                      resolvedData: { id: undefined, name: 'test entry' },
-                    },
-                    msg: 'Required field "testField" is null or undefined.',
-                  },
-                ],
+                errors: [{ data: {}, msg: 'Required field "testField" is null or undefined.' }],
               },
             ]);
           })
@@ -102,16 +93,7 @@ testModules
             expectValidationError(errors, [
               {
                 path: ['updateTest'],
-                errors: [
-                  {
-                    data: {
-                      operation: 'update',
-                      originalInput: { name: 'updated test entry', testField: null },
-                      resolvedData: { id: undefined, name: 'updated test entry' },
-                    },
-                    msg: 'Required field "testField" is null or undefined.',
-                  },
-                ],
+                errors: [{ data: {}, msg: 'Required field "testField" is null or undefined.' }],
               },
             ]);
           })
