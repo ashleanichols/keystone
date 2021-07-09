@@ -88,6 +88,16 @@ export const expectLimitsError = (
   );
 };
 
+export const expectBadUserInput = (
+  errors: readonly any[] | undefined,
+  args: { path: any[]; message: string }[]
+) => {
+  const unpackedErrors = unpackErrors(errors);
+  expect(unpackedErrors).toEqual(
+    args.map(({ path, message }) => ({ extensions: { code: 'BAD_USER_INPUT' }, path, message }))
+  );
+};
+
 export const expectNestedError = (
   errors: readonly any[] | undefined,
   args: { path: (string | number)[]; message: string }[]
